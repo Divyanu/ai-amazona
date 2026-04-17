@@ -1,22 +1,23 @@
 import { auth } from "@/auth";
-import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency } from "@/lib/format";
+
+function getOrdersByUser(userId: string) {
+  return prisma.order.findMany({
+    where: { userId },
+    include: { items: { include: { product: true } } },
+    orderBy: { createdAt: "desc" },
+  });
+}
 
 export default async function OrdersPage() {
   const session = await auth();
   const userId = session?.user?.id;
 
-  type OrderWithItems = Prisma.OrderGetPayload<{
-    include: { items: { include: { product: true } } };
-  }>;
+  type OrderWithItems = Awaited<ReturnType<typeof getOrdersByUser>>[number];
 
   const orders: OrderWithItems[] = userId
-    ? await prisma.order.findMany({
-        where: { userId },
-        include: { items: { include: { product: true } } },
-        orderBy: { createdAt: "desc" },
-      })
+    ? await getOrdersByUser(userId)
     : [];
 
   return (
