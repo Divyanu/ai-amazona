@@ -28,14 +28,14 @@ export default async function OrdersPage() {
           No orders yet. Place your first order from checkout.
         </div>
       ) : (
-        orders.map((order) => (
+        orders.map((order: OrderWithItems) => (
           <article key={order.id} className="rounded-xl border bg-white p-4">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
               <p className="font-semibold">Order #{order.id.slice(-8).toUpperCase()}</p>
               <p className="text-sm text-slate-500">{new Date(order.createdAt).toLocaleDateString()}</p>
             </div>
             <div className="space-y-2 text-sm">
-              {order.items.map((item) => (
+              {order.items.map((item: OrderWithItems["items"][number]) => (
                 <p key={item.id} className="flex justify-between">
                   <span>
                     {item.product.name} x {item.quantity}
