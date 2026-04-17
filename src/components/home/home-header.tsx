@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Menu, Search, ShoppingCart, User } from "lucide-react";
+import { Menu, Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { HeaderCartButton } from "@/components/home/header-cart-button";
 
 const categories = ["Today's Deals", "Customer Service", "Registry", "Gift Cards", "Sell"];
 
@@ -13,24 +14,27 @@ export function HomeHeader() {
             AMAZONA
           </Link>
 
-          <div className="hidden items-center gap-2 rounded-md border border-slate-700 bg-white/5 px-3 py-2 text-sm text-slate-300 md:flex">
+          <form
+            action="/products"
+            className="hidden items-center gap-2 rounded-md border border-slate-700 bg-white/5 px-3 py-2 text-sm text-slate-300 md:flex"
+          >
             <Search className="h-4 w-4" />
             <input
+              name="q"
               aria-label="Search products"
               className="w-80 bg-transparent text-sm text-white outline-none placeholder:text-slate-400"
               placeholder="Search products..."
             />
-          </div>
+          </form>
 
           <div className="ml-auto flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="text-white hover:bg-slate-800">
-              <User className="h-4 w-4" />
-              <span className="hidden sm:inline">Account</span>
-            </Button>
-            <Button variant="ghost" size="sm" className="text-white hover:bg-slate-800">
-              <ShoppingCart className="h-4 w-4" />
-              <span className="hidden sm:inline">Cart</span>
-            </Button>
+            <Link href="/account">
+              <Button variant="ghost" size="sm" className="text-white hover:bg-slate-800">
+                <User className="h-4 w-4" />
+                <span className="hidden sm:inline">Account</span>
+              </Button>
+            </Link>
+            <HeaderCartButton />
           </div>
         </div>
       </div>

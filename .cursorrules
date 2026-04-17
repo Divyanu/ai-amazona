@@ -82,47 +82,47 @@
   - [X] JWT handling
   - [X] Protected routes
 
-### 3. Core Features - Customer Side [ ]
+### 3. Core Features - Customer Side [X]
 
 - [X] Home Layout:
   - [X] Create `(home)` folder in `app` directory
   - [X] Header with logo, search bar, and navigation
   - [X] Footer with links and social media
-- [ ] Homepage:
-  - banner carousel
-  - latest products
-- [] Products Catalog:
-  - Sidebar with categories and filters
-  - Search results
-  - Product grid
-  - Pagination
-- [] Product pages:
-  - Create product detail page layout
-  - Implement image gallery with thumbnails
-  - Add product information section:
-    - Title, price, description
-    - Stock status
-    - Add to cart button
-  - Reviews and ratings section:
-    - Display existing reviews
-    - Add review form for authenticated users
-    - Star rating component
-  - Related products section:
-    - Show products from same category
-    - Product card carousel
-- [] Shopping cart:
-  - Add/remove items
-  - Update quantities
-  - Cart persistence
-- [] Checkout process:
-  - Shipping information
-  - Payment integration (Stripe)
-  - Order confirmation
-- [] User dashboard:
-  - Order history
-  - Profile management
-  - Saved addresses
-  - Wishlist
+- [X] Homepage:
+  - [X] banner carousel
+  - [X] latest products
+- [X] Products Catalog:
+  - [X] Sidebar with categories and filters
+  - [X] Search results
+  - [X] Product grid
+  - [X] Pagination
+- [X] Product pages:
+  - [X] Create product detail page layout
+  - [X] Implement image gallery with thumbnails
+  - [X] Add product information section:
+    - [X] Title, price, description
+    - [X] Stock status
+    - [X] Add to cart button
+  - [X] Reviews and ratings section:
+    - [X] Display existing reviews
+    - [X] Add review form for authenticated users
+    - [X] Star rating component
+  - [X] Related products section:
+    - [X] Show products from same category
+    - [X] Product card carousel
+- [X] Shopping cart:
+  - [X] Add/remove items
+  - [X] Update quantities
+  - [X] Cart persistence
+- [X] Checkout process:
+  - [X] Shipping information
+  - [X] Payment integration (Stripe)
+  - [X] Order confirmation
+- [X] User dashboard:
+  - [X] Order history
+  - [X] Profile management
+  - [X] Saved addresses
+  - [X] Wishlist
 
 ### 4. Admin Dashboard [ ]
 

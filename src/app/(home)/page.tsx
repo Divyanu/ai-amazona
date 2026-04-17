@@ -1,28 +1,28 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
+import { BannerCarousel } from "@/components/store/banner-carousel";
+import { ProductCard } from "@/components/store/product-card";
+import { getLatestProducts } from "@/lib/storefront";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const latestProducts = await getLatestProducts(6);
+
   return (
-    <section className="grid w-full gap-6 md:grid-cols-3">
-      <Card className="md:col-span-2">
-        <CardHeader>
-          <CardTitle>Welcome to Amazona</CardTitle>
-        </CardHeader>
-        <CardContent className="text-sm text-slate-600">
-          Your customer storefront shell is ready. Next up: homepage sections (banner carousel and
-          latest products), catalog filters, and product detail pages.
-        </CardContent>
-      </Card>
+    <div className="w-full space-y-8">
+      <BannerCarousel />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2 text-sm text-slate-600">
-          <p>Browse products by category.</p>
-          <p>Sign in to view account and orders.</p>
-          <p>Track cart and checkout journey.</p>
-        </CardContent>
-      </Card>
-    </section>
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold">Latest Products</h2>
+          <Link href="/products" className="text-sm font-medium text-slate-700 hover:underline">
+            View all products
+          </Link>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {latestProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }
