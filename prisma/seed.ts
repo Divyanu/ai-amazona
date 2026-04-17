@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { hash } from "bcryptjs";
 import { Pool, PoolClient } from "pg";
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -110,18 +111,21 @@ const catalog: CategorySeed[] = [
 ];
 
 async function seedUsers(client: PoolClient) {
+  const defaultPasswordHash = await hash("123456", 10);
+
   for (const user of users) {
     await client.query(
       `
-      INSERT INTO "User" ("id", "name", "email", "role", "createdAt", "updatedAt")
-      VALUES (md5(random()::text || clock_timestamp()::text), $1, $2, $3::"UserRole", NOW(), NOW())
+      INSERT INTO "User" ("id", "name", "email", "password", "role", "createdAt", "updatedAt")
+      VALUES (md5(random()::text || clock_timestamp()::text), $1, $2, $3, $4::"UserRole", NOW(), NOW())
       ON CONFLICT ("email")
       DO UPDATE SET
         "name" = EXCLUDED."name",
+        "password" = EXCLUDED."password",
         "role" = EXCLUDED."role",
         "updatedAt" = NOW();
       `,
-      [user.name, user.email, user.role],
+      [user.name, user.email, defaultPasswordHash, user.role],
     );
   }
 }
