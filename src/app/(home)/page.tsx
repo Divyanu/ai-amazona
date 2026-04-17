@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BannerCarousel } from "@/components/store/banner-carousel";
 import { ProductCard } from "@/components/store/product-card";
-import { getLatestProducts } from "@/lib/storefront";
+import { getLatestProducts, type StoreProduct } from "@/lib/storefront";
 
 export default async function HomePage() {
   const latestProducts = await getLatestProducts(6);
@@ -18,7 +18,7 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {latestProducts.map((product) => (
+          {latestProducts.map((product: StoreProduct) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

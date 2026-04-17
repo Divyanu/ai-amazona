@@ -1,6 +1,57 @@
 import { prisma } from "@/lib/prisma";
 
-export async function getLatestProducts(limit = 6) {
+export type StoreProduct = {
+  id: string;
+  name: string;
+  slug: string;
+  image: string;
+  category: string;
+  categorySlug?: string;
+  description: string;
+  price: number;
+  stock: number;
+  rating: number;
+  reviewCount: number;
+};
+
+export type ProductReview = {
+  id: string;
+  rating: number;
+  comment: string;
+  userName: string;
+  createdAt: Date;
+};
+
+export type ProductDetails = {
+  id: string;
+  name: string;
+  slug: string;
+  image: string;
+  description: string;
+  price: number;
+  stock: number;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+    image: string | null;
+    description: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  reviews: ProductReview[];
+  relatedProducts: Array<{
+    id: string;
+    name: string;
+    slug: string;
+    image: string;
+    price: number;
+    category: string;
+    rating: number;
+  }>;
+};
+
+export async function getLatestProducts(limit = 6): Promise<StoreProduct[]> {
   const products = await prisma.product.findMany({
     where: { isActive: true },
     include: { category: true, reviews: true },
@@ -8,7 +59,7 @@ export async function getLatestProducts(limit = 6) {
     take: limit,
   });
 
-  return products.map((product) => ({
+  return products.map((product): StoreProduct => ({
     id: product.id,
     name: product.name,
     slug: product.slug,
@@ -18,7 +69,7 @@ export async function getLatestProducts(limit = 6) {
     price: Number(product.price),
     stock: product.stock,
     rating: product.reviews.length
-      ? product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length
+      ? product.reviews.reduce((acc: number, review) => acc + review.rating, 0) / product.reviews.length
       : 0,
     reviewCount: product.reviews.length,
   }));
@@ -29,7 +80,7 @@ export async function getCatalog(params: {
   category?: string;
   min?: number;
   max?: number;
-}) {
+}): Promise<StoreProduct[]> {
   const products = await prisma.product.findMany({
     where: {
       isActive: true,
@@ -47,7 +98,7 @@ export async function getCatalog(params: {
     orderBy: { createdAt: "desc" },
   });
 
-  return products.map((product) => ({
+  return products.map((product): StoreProduct => ({
     id: product.id,
     name: product.name,
     slug: product.slug,
@@ -58,7 +109,7 @@ export async function getCatalog(params: {
     price: Number(product.price),
     stock: product.stock,
     rating: product.reviews.length
-      ? product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length
+      ? product.reviews.reduce((acc: number, review) => acc + review.rating, 0) / product.reviews.length
       : 0,
     reviewCount: product.reviews.length,
   }));
@@ -70,7 +121,7 @@ export async function getCategories() {
   });
 }
 
-export async function getProductBySlug(slug: string) {
+export async function getProductBySlug(slug: string): Promise<ProductDetails | null> {
   const product = await prisma.product.findUnique({
     where: { slug },
     include: {
@@ -103,7 +154,7 @@ export async function getProductBySlug(slug: string) {
     price: Number(product.price),
     stock: product.stock,
     category: product.category,
-    reviews: product.reviews.map((review) => ({
+    reviews: product.reviews.map((review): ProductReview => ({
       id: review.id,
       rating: review.rating,
       comment: review.comment ?? "",
@@ -118,7 +169,7 @@ export async function getProductBySlug(slug: string) {
       price: Number(item.price),
       category: item.category.name,
       rating: item.reviews.length
-        ? item.reviews.reduce((acc, review) => acc + review.rating, 0) / item.reviews.length
+        ? item.reviews.reduce((acc: number, review) => acc + review.rating, 0) / item.reviews.length
         : 0,
     })),
   };
